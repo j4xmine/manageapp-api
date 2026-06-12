@@ -98,4 +98,4 @@ Desenvolvido por Rodrigues (jaxmine).
 Projeto em desenvolvimento.
 
 O objetivo é evoluir o ManageApp para uma solução completa de gestão de produtos para revenda, com backend em Spring Boot e frontend multiplataforma em Flutter.
-Num futuro próximo, haverá acessoria dentro do aplicativo em quase todas as funcionalidades com IA.
+Num futuro próximo, haverá assessoria dentro do aplicativo em quase todas as funcionalidades com IA.
