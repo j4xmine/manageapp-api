@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.manageapp.manageappapi.repository.ProdutoRepository;
 import com.manageapp.manageappapi.model.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.manageapp.manageappapi.exception.ProdutoNaoEncontradoException;
@@ -22,7 +21,12 @@ public class ProdutoService {
 
     // MÉTODO GOSTOSO anti repetição
     private ProdutoResponseDTO converterParaResponse(Produto produto) {
+
+//        Double precoCompra = produto.getPrecoCompra() == null ? 0.0 : produto.getPrecoCompra();
+//        Double precoVenda = produto.getPrecoVenda() == null ? 0.0 : produto.getPrecoVenda();
+
         ProdutoResponseDTO response = new ProdutoResponseDTO();
+
         response.setId(produto.getId());
         response.setNome(produto.getNome());
         response.setDescricao(produto.getDescricao());
@@ -49,50 +53,54 @@ public class ProdutoService {
 
         // response (resposta ao usuario)
         // aqui, convertemos Produto para ResponseDTO (que será o retorno ao front)
-        ProdutoResponseDTO response = new ProdutoResponseDTO();
-        response.setId(produtoSalvo.getId());
-        response.setNome(produtoSalvo.getNome());
-        response.setDescricao(produtoSalvo.getDescricao());
-        response.setPrecoVenda(produtoSalvo.getPrecoVenda());
-        response.setQuantidadeEstoque(produtoSalvo.getQuantidadeEstoque());
-        response.setLucro(
-                produtoSalvo.getPrecoVenda() - produtoSalvo.getPrecoCompra()
-        );
 
-        return response;
+/* CÓDIGO ANTIGO
+ProdutoResponseDTO response = new ProdutoResponseDTO();
+response.setId(produtoSalvo.getId());
+response.setNome(produtoSalvo.getNome());
+response.setDescricao(produtoSalvo.getDescricao());
+response.setPrecoVenda(produtoSalvo.getPrecoVenda());
+response.setQuantidadeEstoque(produtoSalvo.getQuantidadeEstoque());
+response.setLucro(
+        produtoSalvo.getPrecoVenda() - produtoSalvo.getPrecoCompra()
+);
+*/
+
+        return converterParaResponse(produtoSalvo);
     }
 
     public List<ProdutoResponseDTO> listarProdutos() {
-//        List<Produto> produtos = produtoRepository.findAll();
-//        List<ProdutoResponseDTO> response = new ArrayList<>();
-//        for(Produto p : produtos) {
-//            response.add(converterParaResponse(p));
-//        }
 
-        // ***
-        List<ProdutoResponseDTO> response = produtoRepository.findAll().stream().map( this::converterParaResponse ).toList();
-        // produtoRepository.findAll() -> retorna um List<Produto>
-        // stream() -> transforma num fluxo (como se fosse um forEach) produto, produto, produto...
-        // .map(this::méthod) -> aponta para cada objeto Produto pelo o qual o stream está percorrendo, logo em seguida "::" chamando o méthod para converter Produto (entidade) para ProdutoDTO
-        // toList() -> converte para um tipo "List"
+/* CÓDIGO ANTIGO
+List<Produto> produtos = produtoRepository.findAll();
+List<ProdutoResponseDTO> response = new ArrayList<>();
+for(Produto p : produtos) {
+response.add(converterParaResponse(p));
+}
+ produtoRepository.findAll() -> retorna um List<Produto>
+ stream() -> transforma num fluxo (como se fosse um forEach) produto, produto, produto...
+ .map(this::méthod) -> aponta para cada objeto Produto pelo o qual o stream está percorrendo, logo em seguida "::" chamando o méthod para converter Produto (entidade) para ProdutoDTO
+ toList() -> converte para um tipo "List"
+ */
 
-
-        return response;
+        return produtoRepository.findAll().stream().map(this::converterParaResponse).toList();
     }
 
 
     public ProdutoResponseDTO buscarPorId(String id) {
         Produto produtoEncontrado = produtoRepository.findById(id).orElseThrow( () -> new ProdutoNaoEncontradoException("Produto não encontrado com o ID " + id) );
 
-        ProdutoResponseDTO response = new ProdutoResponseDTO();
-        response.setId(produtoEncontrado.getId());
-        response.setNome(produtoEncontrado.getNome());
-        response.setDescricao(produtoEncontrado.getDescricao());
-        response.setPrecoVenda(produtoEncontrado.getPrecoVenda());
-        response.setQuantidadeEstoque(produtoEncontrado.getQuantidadeEstoque());
-        response.setLucro(produtoEncontrado.getPrecoVenda() - produtoEncontrado.getPrecoCompra());
+/* CÓDIGO ANTIGO
+ProdutoResponseDTO response = new ProdutoResponseDTO();
+response.setId(produtoEncontrado.getId());
+response.setNome(produtoEncontrado.getNome());
+response.setDescricao(produtoEncontrado.getDescricao());
+response.setPrecoVenda(produtoEncontrado.getPrecoVenda());
+response.setQuantidadeEstoque(produtoEncontrado.getQuantidadeEstoque());
+response.setLucro(produtoEncontrado.getPrecoVenda() - produtoEncontrado.getPrecoCompra());
+*/
 
-        return response;
+        return converterParaResponse(produtoEncontrado);
     }
 
 
@@ -111,28 +119,31 @@ public class ProdutoService {
         produtoExistente.setPrecoCompra(request.getPrecoCompra());
         produtoExistente.setPrecoVenda(request.getPrecoVenda());
         produtoExistente.setQuantidadeEstoque(request.getQuantidadeEstoque());
-
         Produto produtoSalvo = produtoRepository.save(produtoExistente); // salvando a entidade no BD
 
         // convertendo para ResponseDTO para retornar justamente o DTO dito no tipo de retorno
-        ProdutoResponseDTO response = new ProdutoResponseDTO();
-        response.setId(produtoSalvo.getId());
-        response.setNome(produtoSalvo.getNome());
-        response.setDescricao(produtoSalvo.getDescricao());
-        response.setPrecoVenda(produtoSalvo.getPrecoVenda());
-        response.setQuantidadeEstoque(produtoSalvo.getQuantidadeEstoque());
-        response.setLucro(produtoSalvo.getPrecoVenda() - produtoSalvo.getPrecoCompra());
+/* CÓDIGO ANTIGO
+ProdutoResponseDTO response = new ProdutoResponseDTO();
+response.setId(produtoSalvo.getId());
+response.setNome(produtoSalvo.getNome());
+response.setDescricao(produtoSalvo.getDescricao());
+response.setPrecoVenda(produtoSalvo.getPrecoVenda());
+response.setQuantidadeEstoque(produtoSalvo.getQuantidadeEstoque());
+response.setLucro(produtoSalvo.getPrecoVenda() - produtoSalvo.getPrecoCompra());
+*/
 
-        return response;
+        return converterParaResponse(produtoSalvo);
     }
 
     public List<ProdutoResponseDTO> buscarPorNome(String nome) {
-//        List<Produto> produtosEncontrados = produtoRepository.findByNomeContainingIgnoreCase(nome);
-//        List<ProdutoResponseDTO> response = new ArrayList<>();
-//        for(Produto p : produtosEncontrados) {
-//            response.add(converterParaResponse(p));
-//        }
-        // ***
+
+/* CÓDIGO ANTIGO
+List<Produto> produtosEncontrados = produtoRepository.findByNomeContainingIgnoreCase(nome);
+List<ProdutoResponseDTO> response = new ArrayList<>();
+for(Produto p : produtosEncontrados) {
+    response.add(converterParaResponse(p));
+}
+*/
         return produtoRepository.findByNomeContainingIgnoreCase(nome).stream().map(this::converterParaResponse).toList();
     }
 
