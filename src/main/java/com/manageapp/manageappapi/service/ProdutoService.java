@@ -136,24 +136,24 @@ public class ProdutoService {
         return produtoRepository.findByNomeContainingIgnoreCase(nome).stream().map(this::converterParaResponse).toList();
     }
 
-    public List<Produto> buscarPorPrecoMaiorQue(Double preco) {
-        return produtoRepository.findByPrecoVendaGreaterThan(preco);
+    public List<ProdutoResponseDTO> buscarPorPrecoMaiorQue(Double preco) {
+        return produtoRepository.findByPrecoVendaGreaterThan(preco).stream().map(this::converterParaResponse).toList();
     }
 
-    public List<Produto> buscarPrecoEntre(Double min, Double max) {
-        return produtoRepository.findByPrecoVendaBetween(min, max);
+    public List<ProdutoResponseDTO> buscarPrecoEntre(Double min, Double max) {
+        return produtoRepository.findByPrecoVendaBetween(min, max).stream().map(this::converterParaResponse).toList();
     }
 
-    public List<Produto> buscarPorDescricao(String descricao) {
-        return produtoRepository.findByDescricaoContainingIgnoreCase(descricao);
+    public List<ProdutoResponseDTO> buscarPorDescricao(String descricao) {
+        return produtoRepository.findByDescricaoContainingIgnoreCase(descricao).stream().map(this::converterParaResponse).toList();
     }
 
-    public List<Produto> buscarPorEstoque() {
-        return produtoRepository.findByQuantidadeEstoqueGreaterThanEqual(1);
+    public List<ProdutoResponseDTO> buscarPorEstoque() {
+        return produtoRepository.findByQuantidadeEstoqueGreaterThanEqual(1).stream().map(this::converterParaResponse).toList();
     }
 
-    public List<Produto> produtosSemEstoque() {
-        return produtoRepository.findByQuantidadeEstoqueEquals(0);
+    public List<ProdutoResponseDTO> produtosSemEstoque() {
+        return produtoRepository.findByQuantidadeEstoqueEquals(0).stream().map(this::converterParaResponse).toList();
     }
 
 

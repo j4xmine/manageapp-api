@@ -57,27 +57,27 @@ public class ProdutoController {
 
 
     @GetMapping("/produto/buscar/preco")
-    public List<Produto> buscarPorPrecoMaiorQue(@RequestParam Double preco) {
+    public List<ProdutoResponseDTO> buscarPorPrecoMaiorQue(@RequestParam Double preco) {
         return produtoService.buscarPorPrecoMaiorQue(preco);
     }
 
     @GetMapping("/produto/buscar/precofiltro")
-    public List<Produto> buscarPrecoEntre(@RequestParam Double min, @RequestParam Double max) {
+    public List<ProdutoResponseDTO> buscarPrecoEntre(@RequestParam Double min, @RequestParam Double max) {
         return produtoService.buscarPrecoEntre(min, max);
     }
 
     @GetMapping("/produto/buscar/descricao")
-    public List<Produto> buscarPorDescricao(@RequestParam String descricao) {
+    public List<ProdutoResponseDTO> buscarPorDescricao(@RequestParam String descricao) {
         return produtoService.buscarPorDescricao(descricao);
     }
 
     @GetMapping("/produto/buscar/em-estoque")
-    public List<Produto> buscarPorEstoque() {
+    public List<ProdutoResponseDTO> buscarPorEstoque() {
         return produtoService.buscarPorEstoque();
     }
 
     @GetMapping("/produto/buscar/sem-estoque")
-    public List<Produto> produtosSemEstoque() {
+    public List<ProdutoResponseDTO> produtosSemEstoque() {
         return produtoService.produtosSemEstoque();
     }
 }
