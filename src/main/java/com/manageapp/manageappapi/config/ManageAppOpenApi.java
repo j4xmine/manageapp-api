@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OpenApiConfig { // descrição no início da página do swagger com informações e contato comigo.
+public class ManageAppOpenApi { // descrição no início da página do swagger com informações e contato comigo.
 
     @Bean
     public OpenAPI customOpenApi() {
