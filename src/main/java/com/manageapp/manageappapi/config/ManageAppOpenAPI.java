@@ -19,7 +19,7 @@ public class ManageAppOpenAPI { // descrição no início da página do swagger 
                         .version("1.0.0")
                         .contact(
                                 new Contact()
-                                        .name("Rodrigues")
+                                        .name("Victor Rodrigues")
                                         .email("stcontato.victor@gmail.com")
                         )
         );

@@ -6,7 +6,7 @@ import com.manageapp.manageappapi.model.Produto;
 import org.springframework.stereotype.Component;
 
 @Component // o Spring injeta esse Mapper dentro do Service
-public class ProdutoMapper {
+public class ProdutoMapper { // converte os objetos
 
     public Produto paraEntidade(ProdutoRequestDTO request) {
         Produto entidade = new Produto();
