@@ -50,9 +50,11 @@ public class ProdutoService {
     }
 
     public ProdutoResponseDTO atualizarProduto(String id, ProdutoRequestDTO request) {
-        Produto produtoSalvo = produtoMapper.paraEntidade(request);
-        // convertendo para ResponseDTO para retornar justamente o DTO dito no tipo de retorno
-        return produtoMapper.paraResponse(produtoSalvo);
+        Produto produtoEncontrado = produtoRepository.findById(id).orElseThrow( () -> new ProdutoNaoEncontradoException("Produto não encontrado.") );
+        produtoMapper.atualizarEntidade(produtoEncontrado, request);
+
+        Produto produtoAtualizado = produtoRepository.save(produtoEncontrado);
+        return produtoMapper.paraResponse(produtoAtualizado);
     }
 
     public List<ProdutoResponseDTO> buscarPorNome(String nome) {

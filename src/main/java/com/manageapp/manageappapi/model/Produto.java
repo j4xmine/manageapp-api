@@ -1,9 +1,6 @@
 package com.manageapp.manageappapi.model;
 
-import com.manageapp.manageappapi.dto.ProdutoRequestDTO;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +15,7 @@ import java.time.LocalDateTime;
 public class Produto { // representa o Banco
     @Id
     private String id;
-// BEAN VALIDATION
+// BEAN VALIDATION -> PERTENCE AGORA AO RequestDTO ********************************************
 //    @NotBlank(message = "Preencha o nome.")
     private String nome;
 //    @NotBlank(message = "Preencha a descrição.")

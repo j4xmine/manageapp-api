@@ -36,4 +36,15 @@ public class ProdutoMapper {
         return response;
     }
 
+    // futuramente
+    // alterar nome de produtoEncontrado -> entidade ou produto
+    // alterar nome de requestAtualizado -> request
+    public void atualizarEntidade(Produto produtoEncontrado, ProdutoRequestDTO requestAtualizado) {
+        produtoEncontrado.setNome(requestAtualizado.getNome());
+        produtoEncontrado.setDescricao(requestAtualizado.getDescricao());
+        produtoEncontrado.setPrecoCompra(requestAtualizado.getPrecoCompra());
+        produtoEncontrado.setPrecoVenda(requestAtualizado.getPrecoVenda());
+        produtoEncontrado.setQuantidadeEstoque(requestAtualizado.getQuantidadeEstoque());
+    }
+
 }
