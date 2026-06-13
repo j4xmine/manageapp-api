@@ -19,8 +19,10 @@ public class Venda {
 
     private Integer quantidadeVendida;
 
+    // valor total no momento da venda
     private Double valorTotalVenda;
 
+    // preço do produto no momento da venda
     private Double valorUnitarioVenda;
 
     private LocalDateTime dataVenda;
