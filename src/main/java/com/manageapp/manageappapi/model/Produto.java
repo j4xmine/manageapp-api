@@ -1,5 +1,6 @@
 package com.manageapp.manageappapi.model;
 
+import com.manageapp.manageappapi.dto.ProdutoRequestDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;

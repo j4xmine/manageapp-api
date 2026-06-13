@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.manageapp.manageappapi.repository.ProdutoRepository;
 import com.manageapp.manageappapi.model.Produto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.manageapp.manageappapi.exception.ProdutoNaoEncontradoException;
@@ -18,6 +19,21 @@ public class ProdutoService {
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
     }
+
+    // MÉTODO GOSTOSO anti repetição
+    private ProdutoResponseDTO converterParaResponse(Produto produto) {
+        ProdutoResponseDTO response = new ProdutoResponseDTO();
+        response.setId(produto.getId());
+        response.setNome(produto.getNome());
+        response.setDescricao(produto.getDescricao());
+        response.setPrecoVenda(produto.getPrecoVenda());
+        response.setQuantidadeEstoque(produto.getQuantidadeEstoque());
+        response.setLucro(produto.getPrecoVenda() - produto.getPrecoCompra());
+
+        return response;
+    }
+
+
 
     public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
         // cria o objeto pra converter de RequestDTO para Produto (tipo aceito no banco)
@@ -46,18 +62,40 @@ public class ProdutoService {
         return response;
     }
 
-    public List<Produto> listarProdutos() {
-        return produtoRepository.findAll();
+    public List<ProdutoResponseDTO> listarProdutos() {
+//        List<Produto> produtos = produtoRepository.findAll();
+//        List<ProdutoResponseDTO> response = new ArrayList<>();
+//        for(Produto p : produtos) {
+//            response.add(converterParaResponse(p));
+//        }
+
+        // ***
+        List<ProdutoResponseDTO> response = produtoRepository.findAll().stream().map( this::converterParaResponse ).toList();
+        // produtoRepository.findAll() -> retorna um List<Produto>
+        // stream() -> transforma num fluxo (como se fosse um forEach) produto, produto, produto...
+        // .map(this::méthod) -> aponta para cada objeto Produto pelo o qual o stream está percorrendo, logo em seguida "::" chamando o méthod para converter Produto (entidade) para ProdutoDTO
+        // toList() -> converte para um tipo "List"
+
+
+        return response;
     }
 
 
-//    public Optional<Produto> buscarPorID(String id) {
-//        return produtoRepository.findById(id);
-//    }
-    public Produto buscarPorId(String id) {
-        return produtoRepository.findById(id).orElseThrow(() ->
-                new ProdutoNaoEncontradoException("Produto com ID " + id + " não encotrado."));
+    public ProdutoResponseDTO buscarPorId(String id) {
+        Produto produtoEncontrado = produtoRepository.findById(id).orElseThrow( () -> new ProdutoNaoEncontradoException("Produto não encontrado com o ID " + id) );
+
+        ProdutoResponseDTO response = new ProdutoResponseDTO();
+        response.setId(produtoEncontrado.getId());
+        response.setNome(produtoEncontrado.getNome());
+        response.setDescricao(produtoEncontrado.getDescricao());
+        response.setPrecoVenda(produtoEncontrado.getPrecoVenda());
+        response.setQuantidadeEstoque(produtoEncontrado.getQuantidadeEstoque());
+        response.setLucro(produtoEncontrado.getPrecoVenda() - produtoEncontrado.getPrecoCompra());
+
+        return response;
     }
+
+
 
     public void deletarProdutoPorId(String id) {
         if(!produtoRepository.existsById(id)) {
@@ -66,17 +104,17 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-    public ProdutoResponseDTO atualizarProduto(String id, ProdutoRequestDTO produtoAtualizado) {
-        // VAMOS USAR O TIPO DE RETORNO COMO Produto CASO QUEIRA RETORNAR AO USUÁRIO os DADOS ATUALIZADOS no FLUTTER (devolver ao cliente o resultado. O "salvar" segue a mesma lógica).
+    public ProdutoResponseDTO atualizarProduto(String id, ProdutoRequestDTO request) {
         Produto produtoExistente = produtoRepository.findById(id).orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado para atualizar."));
-        produtoExistente.setNome(produtoAtualizado.getNome());
-        produtoExistente.setDescricao(produtoAtualizado.getDescricao());
-        produtoExistente.setPrecoCompra(produtoAtualizado.getPrecoCompra());
-        produtoExistente.setPrecoVenda(produtoAtualizado.getPrecoVenda());
-        produtoExistente.setQuantidadeEstoque(produtoAtualizado.getQuantidadeEstoque());
+        produtoExistente.setNome(request.getNome());
+        produtoExistente.setDescricao(request.getDescricao());
+        produtoExistente.setPrecoCompra(request.getPrecoCompra());
+        produtoExistente.setPrecoVenda(request.getPrecoVenda());
+        produtoExistente.setQuantidadeEstoque(request.getQuantidadeEstoque());
 
-        Produto produtoSalvo = produtoRepository.save(produtoExistente);
+        Produto produtoSalvo = produtoRepository.save(produtoExistente); // salvando a entidade no BD
 
+        // convertendo para ResponseDTO para retornar justamente o DTO dito no tipo de retorno
         ProdutoResponseDTO response = new ProdutoResponseDTO();
         response.setId(produtoSalvo.getId());
         response.setNome(produtoSalvo.getNome());
@@ -88,8 +126,14 @@ public class ProdutoService {
         return response;
     }
 
-    public List<Produto> buscarPorNome(String nome) {
-        return produtoRepository.findByNomeContainingIgnoreCase(nome);
+    public List<ProdutoResponseDTO> buscarPorNome(String nome) {
+//        List<Produto> produtosEncontrados = produtoRepository.findByNomeContainingIgnoreCase(nome);
+//        List<ProdutoResponseDTO> response = new ArrayList<>();
+//        for(Produto p : produtosEncontrados) {
+//            response.add(converterParaResponse(p));
+//        }
+        // ***
+        return produtoRepository.findByNomeContainingIgnoreCase(nome).stream().map(this::converterParaResponse).toList();
     }
 
     public List<Produto> buscarPorPrecoMaiorQue(Double preco) {

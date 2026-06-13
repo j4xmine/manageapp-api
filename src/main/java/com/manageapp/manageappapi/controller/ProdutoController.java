@@ -30,12 +30,12 @@ public class ProdutoController {
 
     @GetMapping("/produto") // diz ao SPRING: quando alguém fizer um GET (me retorne a lista de produtos)
     // assim que alguém clicar, ESTE MÉTODO SERÁ EXECUTADO
-    public List<Produto> listarProdutos() {
+    public List<ProdutoResponseDTO> listarProdutos() {
         return produtoService.listarProdutos();
     }
 
     @GetMapping("/produto/{id}")
-    public Produto buscarPorID(@PathVariable String id) {
+    public ProdutoResponseDTO buscarPorId(@PathVariable String id) {
         // PathVariable é pra informar ao SPRING que esse ID virá da URL -> ({id})
         return produtoService.buscarPorId(id);
     }
@@ -51,7 +51,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/produto/buscar/nome")
-    public List<Produto> buscarPorNome(@RequestParam String nome) {
+    public List<ProdutoResponseDTO> buscarPorNome(@RequestParam String nome) {
         return produtoService.buscarPorNome(nome);
     }
 
